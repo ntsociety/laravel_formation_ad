@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
@@ -22,7 +24,8 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('admin.produits.create');
+        $category = Category::all();
+        return view('admin.produits.create' , compact('category'));
     }
 
     /**
@@ -30,7 +33,31 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $product = new Product();
+        $data = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string', 'max:255'],
+            'prix' => ['required', 'numeric'],
+            'cate_id' => ['required', 'numeric'],
+            'image' => ['required','image', 'mimes:jpg,png,jpeg', 'max:2048']
+        ], [
+          'required' => 'Ce champ est obligatoire.',
+            'string' => 'Uniquement les chaines de caractères.',
+        ]);
+        if($request->hasFile('image'))
+        {
+            $file = $data['image'];
+            $imageName =date('Y-m-d'). '_'.$file->getClientOriginalName();
+            $file->move('assets/produit/images/',$imageName);
+            $product->image = $imageName;
+        }
+        $product->name = $data['name'];
+        $product->slug = Str::slug($data['name']);
+        $product->description = $data['description'];
+        $product->prix = $data['prix'];
+        $product->cate_id = $data['cate_id'];
+        $product->save();
+        return redirect()->route('produits.index')->with('message', 'Catégorie ajouté avec succès');
     }
 
     /**
