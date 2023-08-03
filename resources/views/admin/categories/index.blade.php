@@ -28,7 +28,7 @@
                         @foreach ($category as $item)
                             <tr>
                                 <td class="text-center">{{ $item->id }}</td>
-                                <td class="text-center">{{ $item->name }}</td>
+                                <td class="text-center">{{ $item->name }} <span>{{ $item->produit->count() }}</span></td>
                                 @if ($item->description)
                                     <td class="text-center">{{ $item->description }}</td>
                                 @else

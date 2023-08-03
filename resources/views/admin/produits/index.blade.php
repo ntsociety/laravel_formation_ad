@@ -20,6 +20,7 @@
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ID</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Nom</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Description</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Prix</th>
                       <th class="text-secondary opacity-7">Action</th>
                     </tr>
                   </thead>
@@ -28,8 +29,19 @@
                         @foreach ($product as $item)
                             <tr>
                                 <td class="text-center">{{ $item->id }}</td>
-                                <td class="text-center">{{ $item->name }}</td>
+                                <td class="text-center">
+                                    <div class="d-flex px-2 py-1">
+                                        <div>
+                                          <img src="{{ asset('assets/produit/images/'.$item->image) }}" class="avatar avatar-sm me-3 border-radius-lg" alt="user1">
+                                        </div>
+                                        <div class="d-flex flex-column justify-content-center">
+                                          <h6 class="mb-0 text-sm">{{ $item->name }}</h6>
+                                          <p class="text-xs text-secondary mb-0">{{ $item->category->name }}</p>
+                                        </div>
+                                    </div>
+                                </td>
                                 <td class="text-center">{{ $item->description }}</td>
+                                <td class="text-center">{{ $item->prix }}F</td>
                                 <form action="{{ route('produits.destroy', $item->id) }}" method="POST">
                                     @csrf
                                     <td class="align-middle">

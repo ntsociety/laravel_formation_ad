@@ -39,7 +39,8 @@ class ProductController extends Controller
             'description' => ['nullable', 'string', 'max:255'],
             'prix' => ['required', 'numeric'],
             'cate_id' => ['required', 'numeric'],
-            'image' => ['required','image', 'mimes:jpg,png,jpeg', 'max:2048']
+            'image' => ['required','image', 'mimes:jpg,png,jpeg', 'max:2048'],
+            'images' => ['required','image', 'mimes:jpg,png,jpeg', 'max:2048']
         ], [
           'required' => 'Ce champ est obligatoire.',
             'string' => 'Uniquement les chaines de caractères.',
@@ -57,6 +58,7 @@ class ProductController extends Controller
         $product->prix = $data['prix'];
         $product->cate_id = $data['cate_id'];
         $product->save();
+
         return redirect()->route('produits.index')->with('message', 'Catégorie ajouté avec succès');
     }
 
